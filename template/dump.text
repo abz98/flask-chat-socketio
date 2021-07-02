@@ -1,0 +1,67 @@
+ <div id="formContent">
+    <!-- Tabs Titles -->
+    <a href="/"><h2 class="inactive underlineHover"> Sign In </h2></a>
+    <h2 class="active">Sign Up </h2>
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img src="{{ url_for('static', filename = 'user.png') }}" id="icon" alt="User Icon" />
+    </div>
+
+    <!-- Login Form -->
+    <form action="http://127.0.0.1:5000/register" method="POST">
+      <input type="text" id="name" class="fadeIn second" name="name" placeholder="name">
+      <input type="email" id="login" class="fadeIn second" name="email" placeholder="email">
+      <input type="password" id="password" class="fadeIn third" name="pass" placeholder="password">
+      <input type="submit" class="fadeIn fourth" value="Sign Up">
+    </form>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+//saaff
+
+<div class="container d-flex justify-content-center my-5">
+  <div class="row my-2 mx-2 main">
+      <!--left-column-->
+      <div class="col-md-4 col-12 mycol">
+          <!--image--> <img  width="100%" height="100%" id="output"> </div>
+      <!--right-column-->
+      <div class="col-md-8 col-12 xcol">
+          <h2 class="title pt-5 pb-3">Sign up</h2>
+          <form class="myform" action="http://127.0.0.1:5000/register" method="POST" enctype="multipart/form-data">
+              <div class="row rone">
+                  <div class="form-group col-md-6 fone py-3"> <input type="text" name="name" class="form-control" placeholder="name"> </div>
+                  <div class="form-group col-md-6 ftwo py-3">   <input type="file" class="form-control" accept="image/*" name="file" id="file"  onchange="loadFile(event)" style="display: True;"></div>
+                  <!-- <p><label for="file" style="cursor: pointer;">Upload Image</label></p> -->
+                </div>
+              <div class="row rtwo">
+                  <div class="form-group col-md-6 fthree py-3"> <input type="text" class="form-control jk" placeholder="Phone"> </div>
+                  <div class="form-group col-md-6 ffour py-3"> <input type="email" name="email" class="form-control lm" placeholder="knwst@gmail.com"> </div>
+              </div>
+              <div class="row rthree">
+                  <div class="form-group col-md-6 ffive py-3"> <input type="password" name="pass" class="form-control" placeholder="Password"> </div>
+                  <div class="form-group col-md-6 fsix py-3"> <input type="password" name="pass" class="form-control" placeholder="Confirm Password"> </div>
+              </div>
+              <div class="row rfour">
+                  <div class="form-group col-md-6 fseven py-3"> <button type="submit" class="btn btn-primary"><span>Create account</span></button> </div>
+                  <div class="form-group col-md-6 feight py-3">
+                      <p class="text-muted">Already have an account?<br><a href="#">Sign in</a></p>
+                  </div>
+              </div>
+          </form>
+  </div>
+</div>
+<script>
+  var loadFile = function(event) {
+    var image = document.getElementById('output');
+    image.src = URL.createObjectURL(event.target.files[0]);
+    
+  };
+  </script>

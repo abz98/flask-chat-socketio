@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>Sign up</title>
+    <style>
+         #back{
+       background-image: url("{{ url_for('static', filename = 'images/as.png') }}");
+       /* Add the blur effect */
+       -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+     }
+    </style>
+  <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> -->
+  
+<!--   <style>
+
+
+body {
+    background: lightgrey
+}
+
+.main {
+    background-color: #fff
+}
+
+.mycol {
+    padding-left: 0;
+    padding-right: 0
+}
+
+.xcol {
+    padding-left: 50px;
+    padding-right: 50px
+}
+
+.title {
+    font-weight: bold;
+    color: #ff39c2
+}
+
+.btn {
+    background-color: #6200EA;
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 0
+}
+
+.btn span {
+    font-size: 15px;
+    font-weight: bold
+}
+
+a {
+    text-decoration: underline;
+    color: #ff39c2 !important
+}
+
+.form-control {
+    border: none;
+    box-shadow: 0px 0.1px 0px 0px #dae0e5;
+    border-radius: 0
+}
+
+.jk,
+.lm {
+    box-shadow: 0px 0.5px 0px 0px #dae0e5 !important
+}
+
+.form-contro input [type="text"],
+.form-control input [type="email"],
+.form-control input [type="password"] {
+    color: black
+}
+
+.form-control:focus {
+    outline: 0;
+    box-shadow: 0px 0.5px 0px 0px #dae0e5 !important
+}
+
+.form-control-placeholder {
+    position: absolute;
+    top: 0;
+    padding: 7px 0 0 0;
+    transition: all 300ms;
+    opacity: 0.5
+}
+
+.form-control:focus+.form-control-placeholder,
+.form-control:valid+.form-control-placeholder {
+    font-size: 80% !important;
+    transform: translate3d(0, -100%, 0) !important;
+    opacity: 1 !important
+}
+
+  </style> -->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'main.css') }}">
+</head>
+<body>
+   <div class="wrapper fadeInDown">
+    <div id="formContent">
+        <!-- Tabs Titles -->
+        <a href="/"><h2 class="inactive underlineHover"> Sign In </h2></a>
+        <h2 class="active">Sign Up </h2>
+    
+        <!-- Icon -->
+        <div class="fadeIn first">
+          <img src="{{ url_for('static', filename = 'user.png') }}" id="icon" alt="" />
+        </div>
+    
+        <!-- Login Form -->
+        <form action="http://127.0.0.1:5000/register" enctype="multipart/form-data" method="POST">
+          <input type="text" id="name" class="fadeIn second" name="name" placeholder="name">
+          <input type="email" id="login" class="fadeIn second" name="email" placeholder="email">
+          <input type="password" id="password" class="fadeIn third" name="pass" placeholder="password">
+          <input type="file" class="form-control" accept="image/*" name="file" id="file"  onchange="loadFile(event)" style="display: none;">
+          <p><label for="file" style="cursor: pointer; background-color: #fff" id="img">Upload Image</label></p>
+          <input type="submit" class="fadeIn fourth" value="Sign Up">
+        </form>
+    
+      </div>
+    </div>
+</div>
+<div id="back"> 
+</div>
+    
+    
+    
+ 
+
+<script>
+  var loadFile = function(event) {
+    var image = document.getElementById('icon');
+    image.src = URL.createObjectURL(event.target.files[0]);
+    image.style.borderRadius = "50%"
+    
+  };
+  </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+{% extends "chat.html" %}
+   {% block body %}
+	<div class="content">
+
+		<div class="contact-profile">
+			<img src="{{url_for('static',filename='images/')}}{{friendsUid}}.jpeg" alt="" />
+			<p>{{friendName}}</p>
+			<div class="social-media">
+				<i class="fa fa-facebook" aria-hidden="true"></i>
+				<i class="fa fa-twitter" aria-hidden="true"></i>
+				 <i class="fa fa-instagram" aria-hidden="true"></i>
+			</div>
+		</div>
+		<div class="messages">
+		<div id="messagess"></div>
+			<ul id="sigma" class="sigma">
+		
+			</ul>
+        </div>
+        <form action="" method="POST">
+
+		<div class="message-input">
+			<div class="wrap">
+			<input type="text" class="message" placeholder="Write your message..." />
+			<i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+			<button class="submit"><i class="fa fa-paper-plane" aria-hidden="true" type="submit"></i></button>
+			</div>
+        </div>
+        </form>
+    </div>
+    {% endblock %}
+    {% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+
+    <script type="text/javascript">
+  var socket = io.connect('http://' + document.domain + ':' + location.port);
+let bb = Date()
+let options = {  
+      month: "short", 
+    day: "numeric", hour: "2-digit", minute: "2-digit"  
+};  
+var randomColor = Math.floor(Math.random()*16777215).toString(16);
+//fetch older messages
+
+  ( function getoldermessages(){
+  fetch("/getoldermessages/{{docid}}?docid={{docid}}", {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            response.json().then(messages => {
+            
+                messages.reverse().forEach(message => addoldmsg(message.uid, message.message, message.sentAt,message.username));
+            })
+        })
+      })() 
+  
+
+  function addoldmsg(id,msg,date,name){
+    var sender = ""
+    if(id == "{{uid}}"){
+       sender = "replies"
+    }else{
+      sender =  "sent"
+    }
+  $('.messages ul').append( '<li class="'+sender+'"><p>'+msg+'</p><br><div class="time">'+date+'</div></li>')
+
+  }
+
+
+//socketss
+socket.on( 'connect', function() {
+        socket.emit( 'my event', {
+          data: 'User Connected'
+        } )
+		socket.emit('join_room',{
+			username : "{{name}}",
+			room : "{{room}}"
+		})
+        var form = $( 'form' ).on( 'submit', function( e ) {
+          e.preventDefault()
+          let user_input = $( 'input.message' ).val()
+          socket.emit( 'my event', {
+            message : user_input,
+            docid : "{{ docid }}"
+          } )
+          $( 'input.message' ).val( '' ).focus()
+        } )
+      } )
+	  // socket.on('join_room_announcement', function (data) {
+    //     console.log(data);
+    //     if (data.username !== "{{ username }}") {
+    //         const newNode = document.createElement('div');
+    //         newNode.innerHTML = `<b>${data.name}</b> has joined the room`;
+    //         document.getElementById('messages').appendChild(newNode);
+    //     }
+    // });
+      socket.on( 'my response', function( msg,name,room ) {
+		console.log( msg )
+		let date = bb.toLocaleString("en-us",options)
+        name()
+        let uid = "{{uid}}";
+        var who = "sent";
+        var char = "me";
+        console.log("emit uid=========>"+uid )
+        if(uid == msg.id){
+            who = "replies"
+            char = msg.name
+        }
+		if(msg.name !==undefined && msg.message !== undefined){    
+      $('.messages ul').append( '<li class="'+who+'"><p>'+msg.message+'</p><br><div class="time">'+msg.sentAt+'</div></li>')
+		}
+      })
+    </script>
+ {% endblock %}  

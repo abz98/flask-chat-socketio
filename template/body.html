@@ -1,0 +1,89 @@
+{% extends "chat.html" %}
+   {% block body %}
+	<div class="content">
+
+		<div class="contact-profile">
+			<!-- <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" /> -->
+			<p>&nbsp; Room chat</p>
+			<div class="social-media">
+				<i class="fa fa-facebook" aria-hidden="true"></i>
+				<i class="fa fa-twitter" aria-hidden="true"></i>
+				 <i class="fa fa-instagram" aria-hidden="true"></i>
+			</div>
+		</div>
+		<div class="messages">
+		<div id="messagess"></div>
+			<ul id="sigma" class="sigma">
+		
+			</ul>
+        </div>
+        <form action="" method="POST">
+
+		<div class="message-input">
+			<div class="wrap">
+			<input type="text" class="message" placeholder="Write your message..." />
+			<i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+			<button class="submit"><i class="fa fa-paper-plane" aria-hidden="true" type="submit"></i></button>
+			</div>
+        </div>
+        </form>
+    </div>
+    {% endblock %}
+    {% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+
+    <script type="text/javascript">
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+let bb = Date()
+let options = {  
+      month: "short", 
+    day: "numeric", hour: "2-digit", minute: "2-digit"  
+};  
+var randomColor = Math.floor(Math.random()*16777215).toString(16);
+
+socket.on( 'connect', function() {
+        socket.emit( 'allroom ok', {
+          data: 'User Connected'
+        } )
+		socket.emit('joined_room',{
+			username : "{{name}}",
+			
+		})
+        var form = $( 'form' ).on( 'submit', function( e ) {
+          e.preventDefault()
+          let user_input = $( 'input.message' ).val()
+          socket.emit( 'allroom ok', {
+            message : user_input
+          } )
+          $( 'input.message' ).val( '' ).focus()
+        } )
+      } )
+	  socket.on('joined_room_announcement', function (data) {
+        console.log(data);
+        if (data.name !== "{{ name }}") {
+            const newNode = document.createElement('div');
+            newNode.innerHTML = `<b>${data.name}</b> has joined the room`;
+            document.getElementById('messagess').appendChild(newNode);
+        }
+    });
+      socket.on( 'res ok', function( msg ) {
+		console.log( msg )
+		let date = bb.toLocaleString("en-us",options)
+        console.log("{{uid}}")
+        let uid = "{{uid}}";
+        var who = "sent"
+        console.log("emit uid=========>"+uid )
+        if(uid == msg.id){
+            who = "replies"
+        }
+		if(msg.name !==undefined && msg.message !== undefined){
+ 
+          $('.messages ul').append( '<li class="'+who+'"><img src="{{url_for("static",filename="images/")}}'+msg.id+'.jpeg" alt="" /><p>'+msg.message+'</p></li>')
+		}
+      })
+     
+    </script>
+
+ {% endblock %}  
+ 

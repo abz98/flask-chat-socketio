@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>firebase-Login</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'main.css') }}">
+   <style>
+     *{
+       box-sizing: border-box;
+     }
+     #back{
+       background-image: url("{{ url_for('static', filename = 'images/as.png') }}");
+       /* Add the blur effect */
+       -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+     }
+   </style>
+</head>
+<body >
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+    <h2 class="active"> Sign In </h2>
+    <a href="http://127.0.0.1:5000/signup"><h2 class="inactive underlineHover">Sign Up </h2></a>
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <!-- <img src="{{ url_for('static', filename = 'user.png') }}" id="icon" alt="User Icon" /> -->
+    </div>
+
+    <!-- Login Form -->
+    <form action="http://127.0.0.1:5000/result" method="POST">
+      <input type="email" id="login" class="fadeIn second" name="email" placeholder="email">
+      <input type="password" id="password" class="fadeIn third" name="pass" placeholder="password">
+      <input type="submit" class="fadeIn fourth" value="Log In">
+    </form>
+<!-- 
+	Will add in future
+    <div id="formFooter">
+      <a class="underlineHover" href="#">Forgot Password?</a>
+    </div>
+ -->
+ 
+</div>
+</div>
+<div id="back"> 
+</div>
+</body>
+</html>

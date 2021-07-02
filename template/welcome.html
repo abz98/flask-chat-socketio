@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome</title>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename = 'welcome.css')}}">
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script> 
+	<link rel="stylesheet" type="text/css" href="../static/welcome.css">
+</head>
+<body>
+	<h3 id="messages"></h3>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-5">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<span class="glyphicon glyphicon-comment"></span> Chat
+						<div class="btn-group pull-right">
+							<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+								<span class="glyphicon glyphicon-chevron-down"></span>
+							</button>
+							<ul class="dropdown-menu slidedown">
+								<li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-refresh">
+								</span>Refresh</a></li>
+								<li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-ok-sign">
+								</span>Available</a></li>
+								<li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-remove">
+								</span>Busy</a></li>
+								<li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-time"></span>
+									Away</a></li>
+								<li class="divider"></li>
+								<li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-off"></span>
+									Sign Out</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="panel-body">
+						<ul class="chat sigma">	
+						</ul>
+					</div>
+					<div class="panel-footer">
+						<form action="" method="POST">
+						<div class="input-group">
+							<input id="btn-input" type="text" class="form-control input-sm message" placeholder="Type your message here..." />
+							<span class="input-group-btn">
+								<button class="btn btn-warning btn-sm" type="submit" id="btn-chat">
+									Send</button>
+							</span>
+						</div>
+					</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+<script type="text/javascript">
+var socket = io.connect('http://' + document.domain + ':' + location.port);
+let bb = Date()
+let options = {  
+      month: "short", 
+    day: "numeric", hour: "2-digit", minute: "2-digit"  
+};  
+var randomColor = Math.floor(Math.random()*16777215).toString(16);
+
+socket.on( 'connect', function() {
+        socket.emit( 'my event', {
+          data: 'User Connected'
+        } )
+		socket.emit('join_room',{
+			username : "{{name}}",
+			room : "{{room}}"
+		})
+        var form = $( 'form' ).on( 'submit', function( e ) {
+          e.preventDefault()
+          let user_input = $( 'input.message' ).val()
+          socket.emit( 'my event', {
+            message : user_input
+          } )
+          $( 'input.message' ).val( '' ).focus()
+        } )
+      } )
+	  socket.on('join_room_announcement', function (data) {
+        console.log(data);
+        if (data.username !== "{{ username }}") {
+            const newNode = document.createElement('div');
+            newNode.innerHTML = `<b>${data.name}</b> has joined the room`;
+            document.getElementById('messages').appendChild(newNode);
+        }
+    });
+      socket.on( 'my response', function( msg,name,room ) {
+		console.log( msg )
+		let date = bb.toLocaleString("en-us",options)
+        name()
+		if(msg.name !==undefined && msg.message !== undefined){
+ 
+          $( 'ul.sigma' ).append( '<li class="right clearfix"><span class="chat-img pull-left"><img src="http://placehold.it/50/'+msg.color+'/fff&text='+(msg.name).charAt(0)+'" alt="User Avatar" class="img-circle" /> </span> <div class="chat-body clearfix"> <div class="header"> <strong class="primary-font">'+msg.name+'</strong> <small class="pull-right text-muted"> <span class="glyphicon glyphicon-time"></span>'+date+'</small> </div> <p>'+msg.message+'</p> </div> </li>' )
+		}
+      })
+</script>
+</body>
+</html>
